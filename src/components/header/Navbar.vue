@@ -27,10 +27,12 @@
           />
         </g>
       </svg>
-      <span class="ml-2 font-black text-xl">MoviesHunter</span>
+      <router-link class="ml-2 font-black text-xl" to="/"
+        >MoviesHunter</router-link
+      >
 
       <ul class="flex">
-        <li><router-link to="/movies" class="ml-5">Movies</router-link></li>
+        <li><router-link to="/" class="ml-5">Movies</router-link></li>
         <li><router-link to="/actors" class="ml-5">Actors</router-link></li>
         <li><router-link to="/profile" class="ml-5">Profile</router-link></li>
       </ul>

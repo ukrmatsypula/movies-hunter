@@ -1,5 +1,6 @@
 import VueRouter from "vue-router";
 import Home from "@/components/Home";
+import Movie from "@/components/movies/Movie";
 
 const router = new VueRouter({
   mode: "history",
@@ -8,6 +9,12 @@ const router = new VueRouter({
       path: "/",
       name: "home",
       component: Home,
+    },
+
+    {
+      path: "/movie/:id",
+      name: "movie",
+      component: Movie,
     },
   ],
 });
