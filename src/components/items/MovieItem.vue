@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-link to="/movie/1">
+    <router-link :to="`/movie/${movie.id}`">
       <img
         id="avatar"
         :src="posterPath"
@@ -44,6 +44,7 @@
 
 <script>
 export default {
+  name: "h-movie",
   props: {
     movie: {
       required: true,

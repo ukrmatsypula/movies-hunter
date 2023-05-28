@@ -1,13 +1,9 @@
 <template>
   <div>
     <div class="container mx-auto flex mt-20 border-b border-gray-500 pb-2">
-      <img
-        src="https://content.rozetka.com.ua/goods/images/original/19479089.jpg"
-        alt="joker"
-        class="w-64"
-      />
+      <img :src="posterPath" alt="joker" class="w-64" />
       <div class="ml-24">
-        <h1 class="text-4xl font-semibold">Joker</h1>
+        <h1 class="text-4xl font-semibold">{{ movie.title }}</h1>
         <span class="text-gray-500 text-sm flex items-center">
           <svg
             class="w-3 h-3 text-yellow-500 fill-current mr-2"
@@ -29,13 +25,14 @@
               />
             </g>
           </svg>
-          82% | 2019-10-02 Crime, Thriller, Drama</span
-        >
+          {{ movie.vote_average * 10 }}% | {{ movie.release_date }}
+
+          <span v-for="(item, index) in movie.genres" :key="index" class="ml-1">
+            {{ renderGenres(item, index) }}
+          </span>
+        </span>
         <p class="mt-5">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, nisi
-          dignissimos, eius at iusto quisquam autem officia eveniet aperiam
-          rerum similique culpa reiciendis incidunt commodi provident animi
-          dolore sunt quaerat?
+          {{ movie.overview }}
         </p>
         <div class="mt-5">
           <span class="font-semi">Featured Cast</span>
@@ -103,7 +100,7 @@
       </div>
     </div>
 
-    <Cast />
+    <Cast :casts="movie.credits?.cast" />
     <Images />
   </div>
 </template>
@@ -117,6 +114,41 @@ export default {
   components: {
     Cast,
     Images,
+  },
+
+  data: () => ({
+    movie: [],
+  }),
+  async mounted() {
+    await this.fetchMovie(this.$route.params.id);
+  },
+  computed: {
+    posterPath() {
+      let poster = "";
+
+      if (this.movie.poster_path) {
+        poster = `https://image.tmdb.org/t/p/w500${this.movie.poster_path}`;
+      }
+
+      return poster;
+    },
+  },
+
+  methods: {
+    async fetchMovie(movieId) {
+      try {
+        const { data } = await this.$http.get(
+          `/movie/${movieId}?append_to_response=credits,videos,images`
+        );
+
+        this.movie = data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    renderGenres(item, index) {
+      return `${item.name}${this.movie.genres.length - 1 !== index ? "," : ""}`;
+    },
   },
 };
 </script>

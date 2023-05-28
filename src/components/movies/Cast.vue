@@ -3,37 +3,13 @@
     <h2 class="text-4xl font-semibold mb-5">Cast</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      <div class="mr-2">
+      <div class="mr-2" v-for="cast in casts" :key="cast.id">
         <img
-          src="https://this-person-does-not-exist.com/img/avatar-gen4d1ccaca85816321cdc875ce6597954f.jpg"
+          :src="castProfileImage(cast)"
           alt=""
           class="hover:opacity-75 transition ease-in-out duration-150"
         />
-        <span class="text-sm text-gray-300">Arthur Fleck / Joker</span>
-      </div>
-      <div class="mr-2">
-        <img
-          src="https://this-person-does-not-exist.com/img/avatar-gen4d1ccaca85816321cdc875ce6597954f.jpg"
-          alt=""
-          class="hover:opacity-75 transition ease-in-out duration-150"
-        />
-        <span class="text-sm text-gray-300">Arthur Fleck / Joker</span>
-      </div>
-      <div class="mr-2">
-        <img
-          src="https://this-person-does-not-exist.com/img/avatar-gen4d1ccaca85816321cdc875ce6597954f.jpg"
-          alt=""
-          class="hover:opacity-75 transition ease-in-out duration-150"
-        />
-        <span class="text-sm text-gray-300">Arthur Fleck / Joker</span>
-      </div>
-      <div class="mr-2">
-        <img
-          src="https://this-person-does-not-exist.com/img/avatar-gen4d1ccaca85816321cdc875ce6597954f.jpg"
-          alt=""
-          class="hover:opacity-75 transition ease-in-out duration-150"
-        />
-        <span class="text-sm text-gray-300">Arthur Fleck / Joker</span>
+        <span class="text-sm text-gray-300">{{ cast.name }}</span>
       </div>
     </div>
   </div>
@@ -42,6 +18,20 @@
 <script>
 export default {
   name: "h-cast",
+  props: {
+    casts: {
+      required: true,
+    },
+  },
+  methods: {
+    castProfileImage(cast) {
+      if (cast.profile_path) {
+        return `https://image.tmdb.org/t/p/w500${cast.profile_path}`;
+      } else {
+        return "https://via.placeholder.com/300x450";
+      }
+    },
+  },
 };
 </script>
 
