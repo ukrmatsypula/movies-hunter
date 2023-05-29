@@ -101,7 +101,7 @@
     </div>
 
     <Cast :casts="movie.credits?.cast" />
-    <Images />
+    <Images :images="movie.images" />
   </div>
 </template>
 

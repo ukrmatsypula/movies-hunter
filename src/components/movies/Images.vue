@@ -3,33 +3,9 @@
     <h2 class="text-4xl font-semibold mb-5">Images</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      <div class="mr-2">
+      <div class="mr-2" v-for="(image, index) in images.backdrops" :key="index">
         <img
-          src="https://i.ytimg.com/vi/ueBcdUPzweY/maxresdefault.jpg"
-          alt=""
-          class="hover:opacity-75 transition ease-in-out duration-150"
-        />
-        <span class="text-sm text-gray-300">Arthur Fleck / Joker</span>
-      </div>
-      <div class="mr-2">
-        <img
-          src="https://i.ytimg.com/vi/ueBcdUPzweY/maxresdefault.jpg"
-          alt=""
-          class="hover:opacity-75 transition ease-in-out duration-150"
-        />
-        <span class="text-sm text-gray-300">Arthur Fleck / Joker</span>
-      </div>
-      <div class="mr-2">
-        <img
-          src="https://i.ytimg.com/vi/ueBcdUPzweY/maxresdefault.jpg"
-          alt=""
-          class="hover:opacity-75 transition ease-in-out duration-150"
-        />
-        <span class="text-sm text-gray-300">Arthur Fleck / Joker</span>
-      </div>
-      <div class="mr-2">
-        <img
-          src="https://i.ytimg.com/vi/ueBcdUPzweY/maxresdefault.jpg"
+          :src="imageFilm(image.file_path)"
           alt=""
           class="hover:opacity-75 transition ease-in-out duration-150"
         />
@@ -42,6 +18,18 @@
 <script>
 export default {
   name: "h-images",
+  props: {
+    images: {
+      required: true,
+    },
+  },
+  methods: {
+    imageFilm(image) {
+      if (image) {
+        return `https://image.tmdb.org/t/p/original${image}`;
+      }
+    },
+  },
 };
 </script>
 
