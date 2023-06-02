@@ -4,6 +4,8 @@
       type="text"
       class="rounded-full bg-gray-600 px-7 mr-5 focus:outline-none focus:outline-shadow"
       placeholder="Search..."
+      v-model="searchTerm"
+      @input="debounceSearch"
     />
 
     <div class="absolute top-5 left-2 transform -translate-y-1/2">
@@ -23,32 +25,20 @@
       </svg>
     </div>
 
-    <div v-if="false" class="absolute z-10 mt-12 ml-2 rounded bg-gray-600 w-60">
-      <ul class="mt-3">
-        <li class="flex items-center border-b border-gray-500">
-          <img
-            src="https://content.rozetka.com.ua/goods/images/original/19479089.jpg"
-            alt=""
-            class="w-10 p-1"
-          />
-          <span class="ml-3">Die Hard</span>
+    <div class="absolute z-10 mt-12 ml-2 rounded bg-gray-600 w-60">
+      <ul class="mt-3" v-if="this.searchResult.length">
+        <li
+          class="flex items-center border-b border-gray-500"
+          v-for="movie in searchResult"
+          :key="movie.id"
+        >
+          <img :src="posterPath(movie)" alt="" class="w-10 p-1" />
+          <span class="ml-3">{{ movie.title }}</span>
         </li>
-        <li class="flex items-center border-b border-gray-500">
-          <img
-            src="https://content.rozetka.com.ua/goods/images/original/19479089.jpg"
-            alt=""
-            class="w-10 p-1"
-          />
-          <span class="ml-3">Die Hard</span>
-        </li>
-        <li class="flex items-center border-b border-gray-500">
-          <img
-            src="https://content.rozetka.com.ua/goods/images/original/19479089.jpg"
-            alt=""
-            class="w-10 p-1"
-          />
-          <span class="ml-3">Die Hard</span>
-        </li>
+      </ul>
+
+      <ul class="px-3" v-if="this.noResultFound">
+        <li>No result found for "{{ searchTerm }}"</li>
       </ul>
     </div>
 
@@ -64,6 +54,44 @@
 <script>
 export default {
   name: "h-SearchBar",
+  data: () => ({
+    searchResult: [],
+    noResultFound: false,
+    searchTerm: "",
+  }),
+  methods: {
+    debounceSearch(event) {
+      clearTimeout(this.debounce);
+
+      this.debounce = setTimeout(() => {
+        if (event.target.value.length > 2) {
+          this.fetchSearch(event.target.value);
+        }
+      }, 600);
+    },
+
+    async fetchSearch(term) {
+      try {
+        const {
+          data: { results },
+        } = await this.$http.get(`/search/movie?query=${term}`);
+        this.searchResult = results;
+        this.noResultFound = results ? true : false;
+
+        console.log(results);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    posterPath(movie) {
+      if (movie.poster_path) {
+        return `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
+      } else {
+        return "https://via.placeholder.com/300x450";
+      }
+    },
+  },
 };
 </script>
 
