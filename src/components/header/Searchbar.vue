@@ -28,7 +28,7 @@
     <div class="absolute z-10 mt-12 ml-2 rounded bg-gray-600 w-60">
       <ul class="mt-3" v-if="this.searchResult.length">
         <li
-          class="flex items-center border-b border-gray-500"
+          class="flex items-center border-b border-gray-500 hover:opacity-75 transition ease-in-out duration-150 cursor-pointer"
           v-for="movie in searchResult"
           :key="movie.id"
         >
@@ -73,6 +73,7 @@ export default {
 
       this.debounce = setTimeout(() => {
         if (event.target.value.length > 2) {
+          this.processing = true;
           this.fetchSearch(event.target.value);
         }
       }, 600);
@@ -80,14 +81,11 @@ export default {
 
     async fetchSearch(term) {
       try {
-        this.processing = true;
         const {
           data: { results },
         } = await this.$http.get(`/search/movie?query=${term}`);
         this.searchResult = results;
         this.processing = false;
-
-        console.log(results);
       } catch (error) {
         console.log(error);
       }
