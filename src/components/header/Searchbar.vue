@@ -37,7 +37,7 @@
         </li>
       </ul>
 
-      <ul class="px-3" v-if="this.noResultFound">
+      <ul class="px-3" v-if="noResultFound">
         <li>No result found for "{{ searchTerm }}"</li>
       </ul>
     </div>
@@ -56,9 +56,17 @@ export default {
   name: "h-SearchBar",
   data: () => ({
     searchResult: [],
-    noResultFound: false,
     searchTerm: "",
+    processing: true,
   }),
+
+  computed: {
+    noResultFound() {
+      return (
+        !this.searchResult.length && !this.processing && this.searchTerm.length
+      );
+    },
+  },
   methods: {
     debounceSearch(event) {
       clearTimeout(this.debounce);
@@ -72,11 +80,12 @@ export default {
 
     async fetchSearch(term) {
       try {
+        this.processing = true;
         const {
           data: { results },
         } = await this.$http.get(`/search/movie?query=${term}`);
         this.searchResult = results;
-        this.noResultFound = results ? true : false;
+        this.processing = false;
 
         console.log(results);
       } catch (error) {
