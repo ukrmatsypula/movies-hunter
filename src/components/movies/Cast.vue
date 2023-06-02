@@ -7,7 +7,7 @@
         <img
           :src="castProfileImage(cast)"
           alt=""
-          class="hover:opacity-75 transition ease-in-out duration-150"
+          class="hover:opacity-75 transition ease-in-out duration-150 w-full"
         />
         <span class="text-sm text-gray-300">{{ cast.name }}</span>
       </div>

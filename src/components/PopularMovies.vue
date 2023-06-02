@@ -7,6 +7,8 @@
     <div
       class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-8"
     >
+      <Spinner v-if="processing" />
+
       <MovieItem
         v-for="movie in movies"
         :key="movie.id"
@@ -18,23 +20,29 @@
 </template>
 
 <script>
+import Spinner from "@/components/Spinner.vue";
 import MovieItem from "@/components/items/MovieItem.vue";
 
 export default {
   components: {
     MovieItem,
+    Spinner,
   },
   data: () => ({
     movies: [],
     genre: [],
+    processing: false,
   }),
   async mounted() {
     try {
+      this.processing = true;
+
       const {
         data: { results },
       } = await this.$http.get("/movie/popular");
 
       this.movies = results;
+      this.processing = false;
     } catch (error) {
       console.log(error);
     }

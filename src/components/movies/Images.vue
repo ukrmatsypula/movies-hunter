@@ -3,13 +3,12 @@
     <h2 class="text-4xl font-semibold mb-5">Images</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      <div class="mr-2" v-for="(image, index) in images.backdrops" :key="index">
+      <div class="m-2" v-for="(image, index) in images?.backdrops" :key="index">
         <img
           :src="imageFilm(image.file_path)"
           alt=""
           class="hover:opacity-75 transition ease-in-out duration-150"
         />
-        <span class="text-sm text-gray-300">Arthur Fleck / Joker</span>
       </div>
     </div>
   </div>

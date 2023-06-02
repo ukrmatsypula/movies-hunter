@@ -1,6 +1,11 @@
 <template>
   <div>
-    <div class="container mx-auto flex mt-20 border-b border-gray-500 pb-2">
+    <Spinner v-if="processing" />
+
+    <div
+      v-else
+      class="container mx-auto flex mt-20 border-b border-gray-500 pb-2"
+    >
       <img :src="posterPath" alt="joker" class="w-64" />
       <div class="ml-24">
         <h1 class="text-4xl font-semibold">{{ movie.title }}</h1>
@@ -25,7 +30,8 @@
               />
             </g>
           </svg>
-          {{ movie.vote_average * 10 }}% | {{ movie.release_date }}
+          {{ renderRating }} |
+          {{ movie.release_date }}
 
           <span v-for="(item, index) in movie.genres" :key="index" class="ml-1">
             {{ renderGenres(item, index) }}
@@ -38,20 +44,19 @@
           <span class="font-semi">Featured Cast</span>
 
           <div class="flex">
-            <div class="flex flex-col mt-5 mr-5">
-              <span>Scott Silver </span>
-              <span class="text-gray-500">Writter</span>
-            </div>
-            <div class="flex flex-col mt-5">
-              <span>Bruce Berman </span>
-              <span class="text-gray-500">Producer</span>
+            <div v-for="(crew, index) in movie.credits?.crew" :key="index">
+              <div v-if="index < 2" class="flex flex-col mt-5 mr-5">
+                <span>{{ crew.name }} </span>
+                <span class="text-gray-500">{{ crew.job }}</span>
+              </div>
             </div>
           </div>
         </div>
         <div class="mt-5">
           <a
             class="rounded bg-yellow-500 px-5 py-3 text-black inline-flex"
-            href="#"
+            :href="youtubeVideo"
+            target="_blank"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -106,6 +111,7 @@
 </template>
 
 <script>
+import Spinner from "@/components/Spinner.vue";
 import Cast from "@/components/movies/Cast.vue";
 import Images from "@/components/movies/Images.vue";
 
@@ -114,10 +120,12 @@ export default {
   components: {
     Cast,
     Images,
+    Spinner,
   },
 
   data: () => ({
     movie: [],
+    processing: false,
   }),
   async mounted() {
     await this.fetchMovie(this.$route.params.id);
@@ -132,16 +140,24 @@ export default {
 
       return poster;
     },
+    renderRating() {
+      return `${(+this.movie.vote_average * 10).toFixed(2)}%`;
+    },
+    youtubeVideo() {
+      return `https://www.youtube.com/embed/${this.movie.videos?.results[0].key}`;
+    },
   },
 
   methods: {
     async fetchMovie(movieId) {
       try {
+        this.processing = true;
         const { data } = await this.$http.get(
           `/movie/${movieId}?append_to_response=credits,videos,images`
         );
 
         this.movie = data;
+        this.processing = false;
       } catch (error) {
         console.log(error);
       }

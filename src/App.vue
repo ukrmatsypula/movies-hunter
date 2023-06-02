@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" v-cloak>
     <div
       class="flex justify-between items-center border-b border-gray-500 py-2"
     >
@@ -20,4 +20,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+[v-cloak] {
+  /* // display: block; */
+}
+</style>
