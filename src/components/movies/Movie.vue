@@ -54,8 +54,8 @@
         </div>
         <div class="mt-5">
           <a
-            class="rounded bg-yellow-500 px-5 py-3 text-black inline-flex"
-            :href="youtubeVideo"
+            class="rounded bg-yellow-500 px-5 py-3 text-black inline-flex hover:bg-yellow-400 cursor-pointer transition"
+            @click.prevent="openYouTubeModal"
             target="_blank"
           >
             <svg
@@ -81,7 +81,7 @@
           >
 
           <a
-            class="rounded bg-yellow-500 px-5 py-3 text-black inline-flex ml-5"
+            class="rounded bg-yellow-500 px-5 py-3 text-black inline-flex ml-5 hover:bg-yellow-400 cursor-pointer transition"
             href="#"
           >
             <svg
@@ -106,7 +106,13 @@
     </div>
 
     <Cast :casts="movie.credits?.cast" />
-    <Images :images="movie.images" />
+    <Images @on-image-click="showImageModal" :images="movie.images" />
+    <media-modal
+      v-model="modalOpen"
+      :mediaURL="mediaURL"
+      :isVideo="isVideo"
+      @close-media-modal="closeModal"
+    />
   </div>
 </template>
 
@@ -114,6 +120,7 @@
 import Spinner from "@/components/Spinner.vue";
 import Cast from "@/components/movies/Cast.vue";
 import Images from "@/components/movies/Images.vue";
+import MediaModal from "@/components/modals/MediaModal.vue";
 
 export default {
   name: "h-movie",
@@ -121,11 +128,15 @@ export default {
     Cast,
     Images,
     Spinner,
+    MediaModal,
   },
 
   data: () => ({
     movie: [],
     processing: false,
+    modalOpen: false,
+    isVideo: false,
+    mediaURL: "",
   }),
   async mounted() {
     await this.fetchMovie(this.$route.params.id);
@@ -142,9 +153,6 @@ export default {
     },
     renderRating() {
       return `${(+this.movie.vote_average * 10).toFixed(2)}%`;
-    },
-    youtubeVideo() {
-      return `https://www.youtube.com/embed/${this.movie.videos?.results[0].key}`;
     },
   },
 
@@ -164,6 +172,31 @@ export default {
     },
     renderGenres(item, index) {
       return `${item.name}${this.movie.genres.length - 1 !== index ? "," : ""}`;
+    },
+
+    openYouTubeModal() {
+      this.mediaURL = this.youtubeVideo();
+      this.isVideo = true;
+      this.modalOpen = true;
+    },
+
+    openImageModal() {
+      this.isVideo = false;
+      this.modalOpen = true;
+    },
+
+    showImageModal(imageFullPath) {
+      this.mediaURL = imageFullPath;
+      this.isVideo = false;
+      this.modalOpen = true;
+    },
+
+    youtubeVideo() {
+      return `https://www.youtube.com/embed/${this.movie.videos?.results[0].key}`;
+    },
+
+    closeModal() {
+      this.modalOpen = false;
     },
   },
 };
