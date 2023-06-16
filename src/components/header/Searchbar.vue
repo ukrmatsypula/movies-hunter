@@ -6,6 +6,8 @@
       placeholder="Search..."
       v-model="searchTerm"
       @input="debounceSearch"
+      @keyup.esc="keyboardEvent"
+      @focus="handleFocus"
     />
 
     <div class="absolute top-5 left-2 transform -translate-y-1/2">
@@ -26,19 +28,21 @@
     </div>
 
     <div class="absolute z-10 mt-12 ml-2 rounded bg-gray-600 w-60">
-      <ul class="mt-3" v-if="this.searchResult.length">
-        <li
-          class="flex items-center border-b border-gray-500 hover:opacity-75 transition ease-in-out duration-150 cursor-pointer"
-          v-for="movie in searchResult"
-          :key="movie.id"
-        >
-          <img :src="posterPath(movie)" alt="" class="w-10 p-1" />
-          <span class="ml-3">{{ movie.title }}</span>
+      <ul class="mt-3" v-if="showSearchResult">
+        <li v-for="movie in searchResult" :key="movie.id">
+          <router-link
+            @click.native="showSearchResult = false"
+            :to="`/movie/${movie.id}`"
+            class="flex items-center border-b border-gray-500 hover:opacity-75 transition ease-in-out duration-150 cursor-pointer"
+          >
+            <img :src="posterPath(movie)" alt="" class="w-10 p-1" />
+            <span class="ml-3">{{ movie.title }}</span>
+          </router-link>
         </li>
       </ul>
 
-      <ul class="px-3" v-if="noResultFound">
-        <li>No result found for "{{ searchTerm }}"</li>
+      <ul class="px-3" v-else>
+        <li v-if="noResultFound">No result found for "{{ searchTerm }}"</li>
       </ul>
     </div>
 
@@ -58,6 +62,7 @@ export default {
     searchResult: [],
     searchTerm: "",
     processing: true,
+    showSearchResult: false,
   }),
 
   computed: {
@@ -66,6 +71,13 @@ export default {
         !this.searchResult.length && !this.processing && this.searchTerm.length
       );
     },
+  },
+  mounted() {
+    window.addEventListener("click", (e) => {
+      if (!this.$el.contains(e.target)) {
+        this.showSearchResult = false;
+      }
+    });
   },
   methods: {
     debounceSearch(event) {
@@ -85,6 +97,7 @@ export default {
           data: { results },
         } = await this.$http.get(`/search/movie?query=${term}`);
         this.searchResult = results;
+        this.showSearchResult = results.length ? true : false;
         this.processing = false;
       } catch (error) {
         console.log(error);
@@ -96,6 +109,16 @@ export default {
         return `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
       } else {
         return "https://via.placeholder.com/300x450";
+      }
+    },
+
+    keyboardEvent() {
+      this.showSearchResult = false;
+    },
+
+    handleFocus() {
+      if (this.searchTerm) {
+        this.showSearchResult = true;
       }
     },
   },
