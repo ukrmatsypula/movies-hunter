@@ -14,19 +14,19 @@ const router = new VueRouter({
     },
 
     {
-      path: "/movie/:id",
+      path: "/movies-hunter/movie/:id",
       name: "movie",
       component: Movie,
     },
 
     {
-      path: "/actors",
+      path: "/movies-hunter/actors",
       name: "actors",
       component: Actors,
     },
 
     {
-      path: "/actor/:id",
+      path: "/movies-hunter/actor/:id",
       name: "actorDetail",
       component: ActorDetail,
     },
