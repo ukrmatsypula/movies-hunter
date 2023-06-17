@@ -27,6 +27,7 @@
         >Support</a
       >
       <a
+        @click="logout"
         class="text-gray-500 block px-4 py-2 hover:bg-indigo-500 hover:text-white cursor-pointer"
         >Logout</a
       >
@@ -39,6 +40,13 @@ export default {
   data: () => ({
     isOpen: false,
   }),
+
+  methods: {
+    logout() {
+      this.$store.dispatch("setUserLoggedIn", false);
+      this.isOpen = false;
+    },
+  },
 };
 </script>
 

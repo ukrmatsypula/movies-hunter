@@ -34,7 +34,9 @@
       <ul class="flex">
         <li><router-link to="/" class="ml-5">Movies</router-link></li>
         <li><router-link to="/actors" class="ml-5">Actors</router-link></li>
-        <li><router-link to="/profile" class="ml-5">Profile</router-link></li>
+        <li v-if="$store.getters.isUserLoggedIn">
+          <router-link to="/profile" class="ml-5">Profile</router-link>
+        </li>
       </ul>
     </div>
   </div>

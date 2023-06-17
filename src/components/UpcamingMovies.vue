@@ -8,6 +8,7 @@
       :clickable="true"
       :listData="upcomingMovies"
       :height="500"
+      :key="upcomingMovies.length"
     >
       <slide v-for="(movie, i) in upcomingMovies" :index="i" :key="movie.id">
         <figure>
