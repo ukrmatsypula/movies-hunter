@@ -357,7 +357,9 @@ export default {
           `/person/${actorId}/combined_credits`
         );
 
-        this.knownFor = data.cast.slice(0, 10);
+        this.knownFor = data.cast
+          .filter((movie) => movie.media_type === "movie")
+          .slice(0, 10);
         this.credits = data.crew.slice(0, 10);
       } catch (error) {
         console.log(error);
