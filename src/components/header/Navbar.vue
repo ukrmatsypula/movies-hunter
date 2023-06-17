@@ -27,13 +27,13 @@
           />
         </g>
       </svg>
-      <router-link class="ml-2 font-black text-xl" to="/"
+      <router-link class="ml-2 font-black text-xl" to="/movies-hunter/"
         >MoviesHunter</router-link
       >
 
       <ul class="flex">
         <li><router-link to="/movies-hunter/" class="ml-5">Movies</router-link></li>
-        <li><router-link to="/actors" class="ml-5">Actors</router-link></li>
+        <li><router-link to="/movies-hunter/actors" class="ml-5">Actors</router-link></li>
         <li v-if="$store.getters.isUserLoggedIn">
           <router-link to="/profile" class="ml-5">Profile</router-link>
         </li>
