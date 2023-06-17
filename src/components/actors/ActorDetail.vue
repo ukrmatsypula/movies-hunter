@@ -1,6 +1,5 @@
 <template>
-  <Spinner v-if="processing" />
-  <div v-else class="container mx-auto flex px-4 py-16">
+  <div class="container mx-auto flex px-4 py-16">
     <div class="max-w-xs">
       <img :src="actorImage" alt="" />
 
@@ -319,15 +318,11 @@ M461.516,280.283c-0.082,0.023-0.166,0.031-0.249,0.057c-1.849,0.546-3.737,0.956-5
 </template>
 
 <script>
-import Spinner from "@/components/Spinner.vue";
-
 export default {
-  components: { Spinner },
   data: () => ({
     actor: "",
     knownFor: [],
     credits: [],
-    processing: false,
   }),
 
   mounted() {
@@ -349,25 +344,21 @@ export default {
   methods: {
     async fetchActor(actorId) {
       try {
-        this.processing = true;
         const { data } = await this.$http(`/person/${actorId}`);
 
         this.actor = data;
-        this.processing = false;
       } catch (error) {
         console.log(error);
       }
     },
     async fetchCredits(actorId) {
       try {
-        this.processing = true;
         const { data } = await this.$http(
           `/person/${actorId}/combined_credits`
         );
 
-        this.knownFor = data.cast.slice(Math.max(data.cast.length - 5, 1));
-        this.credits = data.crew.slice(Math.max(data.crew.length - 5, 1));
-        this.processing = false;
+        this.knownFor = data.cast.slice(0, 10);
+        this.credits = data.crew.slice(0, 10);
       } catch (error) {
         console.log(error);
       }

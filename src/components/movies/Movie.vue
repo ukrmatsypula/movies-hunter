@@ -131,6 +131,15 @@ export default {
     MediaModal,
   },
 
+  watch: {
+    "$route.params.id": {
+      handler() {
+        this.fetchMovie(this.$route.params.id);
+      },
+      immediate: true,
+    },
+  },
+
   data: () => ({
     movie: [],
     processing: false,
@@ -138,9 +147,7 @@ export default {
     isVideo: false,
     mediaURL: "",
   }),
-  async mounted() {
-    await this.fetchMovie(this.$route.params.id);
-  },
+
   computed: {
     posterPath() {
       let poster = "";

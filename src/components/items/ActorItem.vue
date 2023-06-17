@@ -20,7 +20,12 @@ export default {
 
   computed: {
     profileImage() {
-      return `https://image.tmdb.org/t/p/w235_and_h235_face${this.actor.profile_path}`;
+      const profileImage = this.actor.profile_path;
+
+      if (profileImage) {
+        return `https://image.tmdb.org/t/p/w235_and_h235_face${this.actor.profile_path}`;
+      }
+      return "https://via.placeholder.com/358x358";
     },
     knownFor() {
       let knownStr = "";
