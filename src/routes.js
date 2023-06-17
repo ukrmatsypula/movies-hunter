@@ -8,7 +8,7 @@ const router = new VueRouter({
   mode: "history",
   routes: [
     {
-      path: "/",
+      path: "/movies-hunter/",
       name: "home",
       component: Home,
     },
