@@ -290,7 +290,7 @@ M461.516,280.283c-0.082,0.023-0.166,0.031-0.249,0.057c-1.849,0.546-3.737,0.956-5
       >
         <div v-for="movie in knownFor" :key="movie.id">
           <router-link
-            :to="`/movie/${movie.id}`"
+            :to="`/movies-hunter/movie/${movie.id}`"
             class="text-gray-400 text-sm leading-normal hover:text-white"
           >
             <img

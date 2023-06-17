@@ -32,7 +32,7 @@
         <li v-for="movie in searchResult" :key="movie.id">
           <router-link
             @click.native="showSearchResult = false"
-            :to="`/movie/${movie.id}`"
+            :to="`/movies-hunter/movie/${movie.id}`"
             class="flex items-center border-b border-gray-500 hover:opacity-75 transition ease-in-out duration-150 cursor-pointer"
           >
             <img :src="posterPath(movie)" alt="" class="w-10 p-1" />

@@ -14,7 +14,7 @@
         <figure>
           <img :src="upcomingPoster(movie.poster_path)" />
           <figcaption>
-            <router-link :to="`/movie/${movie.id}`" class="block">
+            <router-link :to="`/movies-hunter/movie/${movie.id}`" class="block">
               {{ movie.title }}
             </router-link>
           </figcaption>
