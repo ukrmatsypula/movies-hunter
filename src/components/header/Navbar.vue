@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex items-center">
+    <div class="flex flex-col md:flex-row items-center">
       <svg
         class="w-12 h-12"
         fill="#FFFFFF"

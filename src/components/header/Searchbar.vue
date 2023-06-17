@@ -2,7 +2,7 @@
   <div class="flex relative">
     <input
       type="text"
-      class="rounded-full bg-gray-600 px-7 mr-5 focus:outline-none focus:outline-shadow"
+      class="hidden md:block rounded-full bg-gray-600 px-7 mr-5 focus:outline-none focus:outline-shadow"
       placeholder="Search..."
       v-model="searchTerm"
       @input="debounceSearch"
