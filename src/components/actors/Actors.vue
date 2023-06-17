@@ -1,10 +1,10 @@
 <template>
   <div class="container mx-auto px-4 py-16">
     <div v-if="!processing && actors.length">
-      <h2 class="text-yellow-500 text-lg uppercase font-semibold">
+      <h2 class="text-yellow-500 text-lg uppercase font-semibold mb-4">
         Popular Actors
       </h2>
-      processing
+
       <div
         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
       >
