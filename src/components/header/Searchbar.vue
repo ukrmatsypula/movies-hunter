@@ -10,7 +10,7 @@
       @focus="handleFocus"
     />
 
-    <div class="absolute top-5 left-2 transform -translate-y-1/2">
+    <div class="absolute top-1/2 left-2 transform -translate-y-1/2">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -46,25 +46,24 @@
       </ul>
     </div>
 
-    <img
-      id="avatar"
-      src="https://this-person-does-not-exist.com/img/avatar-gen4d1ccaca85816321cdc875ce6597954f.jpg"
-      class="h-10 rounded-full mr-5"
-      alt="user"
-    />
+    <AccountDropDown />
   </div>
 </template>
 
 <script>
+import AccountDropDown from "@/components/header/AccountDropDown";
+
 export default {
   name: "h-SearchBar",
+  comments: {
+    AccountDropDown,
+  },
   data: () => ({
     searchResult: [],
     searchTerm: "",
     processing: true,
     showSearchResult: false,
   }),
-
   computed: {
     noResultFound() {
       return (
@@ -82,7 +81,6 @@ export default {
   methods: {
     debounceSearch(event) {
       clearTimeout(this.debounce);
-
       this.debounce = setTimeout(() => {
         if (event.target.value.length > 2) {
           this.processing = true;
@@ -90,7 +88,6 @@ export default {
         }
       }, 600);
     },
-
     async fetchSearch(term) {
       try {
         const {
@@ -103,7 +100,6 @@ export default {
         console.log(error);
       }
     },
-
     posterPath(movie) {
       if (movie.poster_path) {
         return `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
@@ -111,17 +107,16 @@ export default {
         return "https://via.placeholder.com/300x450";
       }
     },
-
     keyboardEvent() {
       this.showSearchResult = false;
     },
-
     handleFocus() {
       if (this.searchTerm) {
         this.showSearchResult = true;
       }
     },
   },
+  components: { AccountDropDown },
 };
 </script>
 
