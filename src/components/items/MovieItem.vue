@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-link :to="`/movie/${movie.id}`">
+    <router-link :to="`/movies-hunter/movie/${movie.id}`">
       <img
         id="avatar"
         :src="posterPath"
